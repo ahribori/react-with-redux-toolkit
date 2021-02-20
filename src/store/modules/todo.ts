@@ -22,7 +22,7 @@ export const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    clear(state, { payload }) {
+    clear(state) {
       state.todo = null;
     },
   },
