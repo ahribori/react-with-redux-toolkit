@@ -1,9 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
 import { todoSlice } from './modules/todo';
+import { booksSlice } from './modules/book';
 
 const rootReducer = combineReducers({
   todoReducer: todoSlice.reducer,
+  bookReducer: booksSlice.reducer,
 });
 
 const store = configureStore({
@@ -13,8 +14,6 @@ const store = configureStore({
 });
 
 export type AppDispatch = typeof store.dispatch;
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export type RootState = ReturnType<typeof rootReducer>;
 
