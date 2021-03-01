@@ -3,8 +3,8 @@ import { todoSlice } from './modules/todo';
 import { booksSlice } from './modules/book';
 
 const rootReducer = combineReducers({
-  todoReducer: todoSlice.reducer,
-  bookReducer: booksSlice.reducer,
+  todo: todoSlice.reducer,
+  book: booksSlice.reducer,
 });
 
 const store = configureStore({
