@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
-import { fetchTodos, todoSelector } from './store/modules/todo';
+import { fetchTodos, todoSelector, todoSlice } from './store/modules/todo';
 
 function App() {
   const [selectedId, setSelectedId] = useState<string>('');
@@ -19,9 +19,23 @@ function App() {
   useEffect(() => {
     dispatch(fetchTodos());
   }, []);
-  
+
   return (
     <div className="App">
+      <button
+        onClick={() => {
+          dispatch(todoSlice.actions.removeAll());
+        }}
+      >
+        removeAll
+      </button>
+      <button
+        onClick={() => {
+          dispatch(todoSlice.actions.removeById(1));
+        }}
+      >
+        removeById
+      </button>
       <div>
         <h3>Selected:</h3>
         {todoSelected && <pre>{JSON.stringify(todoSelected, null, 2)}</pre>}

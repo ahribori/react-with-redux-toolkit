@@ -2,6 +2,7 @@ import {
   createAsyncThunk,
   createEntityAdapter,
   createSlice,
+  PayloadAction,
 } from '@reduxjs/toolkit';
 import { RootState } from '../index';
 import { ITodo } from '../../model/Todo';
@@ -35,7 +36,14 @@ export const todoSelector = todoAdapter.getSelectors(
 export const todoSlice = createSlice({
   name: 'todo',
   initialState: todoAdapter.getInitialState(initialState),
-  reducers: {},
+  reducers: {
+    removeById(state, action: PayloadAction<number>) {
+      todoAdapter.removeOne(state, action.payload);
+    },
+    removeAll(state) {
+      todoAdapter.removeAll(state);
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchTodos.pending, (state) => {
       state.loading = true;
