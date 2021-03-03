@@ -1,19 +1,29 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
-import { booksAdapter, booksSlice } from './store/modules/book';
+import { fetchTodos, todoAdapter } from './store/modules/todo';
 
 function App() {
   const dispatch = useAppDispatch();
-  const bookSelectors = booksAdapter.getSelectors();
+  const todoState = useAppSelector((state) => state.todo);
+  const todoSelectors = todoAdapter.getSelectors();
 
-  const books = useAppSelector((state) => state.book);
-  console.log(bookSelectors.selectById(books, '1'));
+  const todos = todoSelectors.selectAll(todoState);
+
+  console.log(todoSelectors.selectById(todoState, '13'));
 
   useEffect(() => {
-    dispatch(booksSlice.actions.bookAdded({ bookId: '1', title: '내 책 ' }));
+    dispatch(fetchTodos());
   }, []);
 
-  return <div className="App">App</div>;
+  return (
+    <div className="App">
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo.id}>{todo.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 export default App;
