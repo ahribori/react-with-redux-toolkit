@@ -3,6 +3,7 @@ import {
   createEntityAdapter,
   createSlice,
 } from '@reduxjs/toolkit';
+import { RootState } from '../index';
 import { ITodo } from '../../model/Todo';
 import TodoAPI from '../../api/TodoAPI';
 
@@ -26,6 +27,10 @@ export const todoAdapter = createEntityAdapter<ITodo>({
   selectId: (todo) => todo.id,
   sortComparer: (a, b) => a.title.localeCompare(b.title),
 });
+
+export const todoSelector = todoAdapter.getSelectors(
+  (state: RootState) => state.todo
+);
 
 export const todoSlice = createSlice({
   name: 'todo',

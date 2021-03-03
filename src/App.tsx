@@ -1,25 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './hooks/redux';
-import { fetchTodos, todoAdapter } from './store/modules/todo';
+import { fetchTodos, todoSelector } from './store/modules/todo';
 
 function App() {
+  const [selectedId, setSelectedId] = useState<string>('');
   const dispatch = useAppDispatch();
-  const todoState = useAppSelector((state) => state.todo);
-  const todoSelectors = todoAdapter.getSelectors();
+  const todos = useAppSelector(todoSelector.selectAll);
+  const todoSelected = useAppSelector((state) =>
+    todoSelector.selectById(state, selectedId)
+  );
 
-  const todos = todoSelectors.selectAll(todoState);
-
-  console.log(todoSelectors.selectById(todoState, '13'));
+  const handleClick = useCallback((id: string) => {
+    return (e: React.MouseEvent<HTMLLIElement>) => {
+      setSelectedId(id);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(fetchTodos());
   }, []);
-
+  
   return (
     <div className="App">
+      <div>
+        <h3>Selected:</h3>
+        {todoSelected && <pre>{JSON.stringify(todoSelected, null, 2)}</pre>}
+      </div>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
+          <li key={todo.id} onClick={handleClick(todo.id)}>
+            {todo.title}
+          </li>
         ))}
       </ul>
     </div>
